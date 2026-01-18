@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../data/models/habit_model.dart';
 import '../../data/models/task_model.dart';
 
 class AppInitializer {
@@ -10,8 +11,10 @@ class AppInitializer {
     // Initialize Hive
     await Hive.initFlutter();
     Hive.registerAdapter(TaskModelAdapter());
+    Hive.registerAdapter(HabitModelAdapter());
 
     // Open Boxes
     await Hive.openBox<TaskModel>('tasks');
+    await Hive.openBox<HabitModel>('habits');
   }
 }
