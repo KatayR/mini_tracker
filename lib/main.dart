@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sehir360_clean/presentation/screens/tasks/task_list_screen.dart';
 
 import 'core/theme/app_theme.dart';
+import 'presentation/controllers/task_controller.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(ChangeNotifierProvider(create: (_) => TaskController(), child: const MainApp()));
 }
 
 class MainApp extends StatelessWidget {
