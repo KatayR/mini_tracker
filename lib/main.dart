@@ -8,7 +8,7 @@ import 'data/datasources/task_local_data_source.dart';
 import 'data/models/task_model.dart';
 import 'data/repositories/task_repository.dart';
 import 'presentation/controllers/task_controller.dart';
-import 'presentation/screens/tasks/task_list_screen.dart';
+import 'presentation/screens/main_screen.dart';
 
 void main() async {
   await AppInitializer.init();
@@ -35,7 +35,7 @@ class MainApp extends StatelessWidget {
       title: 'Mini Tracker',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: const TaskListScreen(),
+      home: const MainScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
