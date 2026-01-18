@@ -7,6 +7,7 @@ import 'core/theme/app_theme.dart';
 import 'data/datasources/task_local_data_source.dart';
 import 'data/models/task_model.dart';
 import 'data/repositories/task_repository.dart';
+import 'presentation/controllers/habit_controller.dart';
 import 'presentation/controllers/task_controller.dart';
 import 'presentation/screens/main_screen.dart';
 
@@ -19,8 +20,11 @@ void main() async {
   final taskRepository = TaskRepository(taskLocalDataSource);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => TaskController(taskRepository)..loadTasks(), // Trigger load immediately
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TaskController(taskRepository)..loadTasks()),
+        ChangeNotifierProvider(create: (_) => HabitController()),
+      ],
       child: const MainApp(),
     ),
   );
