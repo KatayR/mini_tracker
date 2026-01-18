@@ -46,7 +46,7 @@ class _HabitListScreenState extends State<HabitListScreen> {
       isSyncing: controller.isSyncing,
       filteredItems: controller.filteredHabits,
       onRefresh: () async {
-        await controller.loadItems();
+        await controller.syncItems();
       },
       emptyMessage: AppStrings.noHabitsFound,
       emptyIcon: AppIcons.emptyHabits,

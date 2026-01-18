@@ -4,7 +4,8 @@ import '../models/task_model.dart';
 import 'base_repository.dart';
 
 class TaskRepositoryImpl extends BaseRepository<TaskEntity, TaskModel> implements ITaskRepository {
-  TaskRepositoryImpl({required super.localDataSource, required super.remoteDataSource}) : super(logLabel: "Task");
+  TaskRepositoryImpl({required super.localDataSource, required super.remoteDataSource, required super.networkInfo})
+    : super(logLabel: "Task");
 
   @override
   TaskModel toModel(TaskEntity entity) => TaskModel.fromEntity(entity);
