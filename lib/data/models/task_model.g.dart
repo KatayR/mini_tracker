@@ -22,7 +22,7 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
       description: fields[2] as String,
       isCompleted: fields[3] as bool,
       dueDate: fields[4] as DateTime?,
-      priorityIndex: fields[5] as int,
+      priorityString: fields[5] as String,
       createdAt: fields[6] as DateTime,
     );
   }
@@ -42,7 +42,7 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
       ..writeByte(4)
       ..write(obj.dueDate)
       ..writeByte(5)
-      ..write(obj.priorityIndex)
+      ..write(obj.priorityString)
       ..writeByte(6)
       ..write(obj.createdAt);
   }

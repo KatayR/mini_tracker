@@ -13,8 +13,7 @@ class AppInitializer {
     Hive.registerAdapter(TaskModelAdapter());
     Hive.registerAdapter(HabitModelAdapter());
 
-    // Open Boxes
-    await Hive.openBox<TaskModel>('tasks');
-    await Hive.openBox<HabitModel>('habits');
+    // Open Settings Box
+    await Hive.openBox('settings');
   }
 }
