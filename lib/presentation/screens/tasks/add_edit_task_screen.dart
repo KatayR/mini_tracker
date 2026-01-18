@@ -50,7 +50,7 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
     final picked = await showDatePicker(
       context: context,
       initialDate: _dueDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
+      firstDate: _dueDate != null && _dueDate!.isBefore(DateTime.now()) ? _dueDate! : DateTime.now(),
       lastDate: DateTime(2100),
     );
     if (picked != null) {
