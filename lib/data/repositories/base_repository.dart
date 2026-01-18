@@ -1,4 +1,5 @@
-import '../../core/utils/logger.dart';
+import 'package:flutter/foundation.dart';
+
 import '../../domain/entities/base_entity.dart';
 import '../../domain/repositories/i_base_repository.dart';
 import '../datasources/interfaces/i_crud_data_source.dart';
@@ -17,7 +18,7 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
     try {
       return await localDataSource.getAll();
     } catch (e) {
-      AppLogger.e("$logLabel Local Load Error", e);
+      if (kDebugMode) print("$logLabel Local Load Error: $e");
       return [];
     }
   }
@@ -44,7 +45,7 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
         await localDataSource.cacheAll(updatedRemoteItems);
       }
     } catch (e) {
-      AppLogger.e("$logLabel Remote Sync Error", e);
+      if (kDebugMode) print("$logLabel Remote Sync Error: $e");
       rethrow;
     }
   }
@@ -59,7 +60,7 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
       // 2. Local Cache Update
       await localDataSource.create(model);
     } catch (e) {
-      AppLogger.e("$logLabel Add Remote Error", e);
+      if (kDebugMode) print("$logLabel Add Remote Error: $e");
       rethrow;
     }
   }
@@ -74,7 +75,7 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
       // 2. Local Cache Update
       await localDataSource.update(model);
     } catch (e) {
-      AppLogger.e("$logLabel Update Remote Error", e);
+      if (kDebugMode) print("$logLabel Update Remote Error: $e");
       rethrow;
     }
   }
@@ -88,7 +89,7 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
       // 2. Local Cache Update
       await localDataSource.delete(id);
     } catch (e) {
-      AppLogger.e("$logLabel Delete Remote Error", e);
+      if (kDebugMode) print("$logLabel Delete Remote Error: $e");
       rethrow;
     }
   }
