@@ -100,6 +100,7 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
                 controller: _nameController,
                 decoration: AppDecorations.input(label: AppStrings.habitName),
                 validator: (v) => AppValidators.required(v, message: AppStrings.nameRequired),
+                maxLength: 50,
               ),
               const SizedBox(height: AppDimens.p24),
 
@@ -118,7 +119,6 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
       children: [
         Text(AppStrings.targetDays, style: AppTextStyles.headingSmall),
         const SizedBox(height: AppDimens.p8),
-        // Requirement: "Target Number of Days (e.g., 7 / 21 / 30)"
         SegmentedButton<int>(
           segments: const [
             ButtonSegment(value: 7, label: Text(AppStrings.sevenDays)),
