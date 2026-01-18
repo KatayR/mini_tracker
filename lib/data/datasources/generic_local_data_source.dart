@@ -27,4 +27,10 @@ class GenericLocalDataSourceImpl<T extends BaseEntity> implements ICrudDataSourc
   Future<void> delete(String id) async {
     await box.delete(id);
   }
+
+  @override
+  Future<void> cacheAll(List<T> items) async {
+    final map = {for (var i in items) i.id: i};
+    await box.putAll(map);
+  }
 }
