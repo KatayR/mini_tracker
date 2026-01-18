@@ -24,13 +24,13 @@ void main() async {
         ChangeNotifierProvider(create: (_) => HabitController(getIt<IHabitRepository>())),
         ChangeNotifierProvider(create: (_) => ThemeController()),
       ],
-      child: const MainApp(),
+      child: const MiniTrackerApp(),
     ),
   );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MiniTrackerApp extends StatelessWidget {
+  const MiniTrackerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
