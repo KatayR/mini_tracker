@@ -44,6 +44,17 @@ Proje, sürdürülebilirlik, test edilebilirlik ve sorumlulukların ayrılması 
 
 Bu yapı sayesinde uygulama, veri kaynağı değişikliklerinden veya UI güncellemelerinden etkilenmeden geliştirilebilir.
 
+### Proje Dizini
+
+```
+lib/
+├── core/           # Çekirdek yardımcı programlar, yapılandırma
+├── data/           # Veri katmanı (Datasources, Modeller, Repo impl)
+├── domain/         # İş katmanı (Entityler, Repo arayüzleri, Lojik)
+├── presentation/   # Sunum katmanı (Ekranlar, Widgetlar, Controllerlar)
+└── main.dart       # Uygulama giriş noktası
+```
+
 ## Seçilen State Management ve Gerekçesi
 
 Bu projede State Management çözümü olarak **Provider** kullanılmıştır.
