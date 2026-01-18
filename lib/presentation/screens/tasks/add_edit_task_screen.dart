@@ -47,10 +47,15 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   }
 
   Future<void> _selectDate() async {
+    final now = DateTime.now();
+    final initialDate = _dueDate ?? now;
+    // ensure firstDate is not after initialDate
+    final firstDate = initialDate.isBefore(now) ? initialDate : now;
+
     final picked = await showDatePicker(
       context: context,
-      initialDate: _dueDate ?? DateTime.now(),
-      firstDate: _dueDate != null && _dueDate!.isBefore(DateTime.now()) ? _dueDate! : DateTime.now(),
+      initialDate: initialDate,
+      firstDate: firstDate,
       lastDate: DateTime(2100),
     );
     if (picked != null) {
