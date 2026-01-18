@@ -2,7 +2,7 @@
 
 ## 1. Project Overview
 **Application Name:** Mini Tracker
-**Technologies:** Flutter (SDK ^3.10.4), Dart
+**Technologies:** Flutter, Dart (SDK ^3.10.4)
 **State Management:** Provider
 **Architecture:** Clean Architecture
 **Local Storage:** Hive
@@ -65,14 +65,14 @@ The application uses two types of datasources, defined by the `ICrudDataSource` 
 *   **Local Datasources (`TaskLocalDataSourceImpl`, `HabitLocalDataSourceImpl`)**:
     *   **Technology**: [Hive](https://docs.hivedb.dev/) (NoSQL key-value database).
     *   **Function**: Act as the local cache for offline access and instant data loads.
-    *   **Implementation**: Separate implementations per entity type, each implementing `ICrudDataSource<T>` interface. Both handle entities extending `BaseEntity` (which provides an `id`).
+    *   **Implementation**: `TaskLocalDataSourceImpl` and `HabitLocalDataSourceImpl` extend a shared `GenericLocalDataSourceImpl` to adhere to DRY principles. Each handles entities extending `BaseEntity`.
 *   **Remote Datasource (`MockGenericRemoteDataSource`)**:
     *   **Technology**: Mock implementation (Simulates backend).
     *   **Function**: Simulates network delays and random errors (10% failure rate) to test error handling and synchronization.
     *   **Behavior**: Supports UPSERT operations (updates if exists, creates if not).
 
 ### Repositories (`BaseRepository`)
-The repository implementation (`GenericRepositoryImpl` equivalent, specifically `BaseRepository`) orchestrates data flow between Local and Remote sources.
+The repository implementation (`BaseRepository`) orchestrates data flow between Local and Remote sources.
 
 *   **Strategy**: **Remote-First for Writes, Local-First for Reads.**
     *   **Read (`fetchAllItems`)**: Returns data from the **Local** datasource to ensure zero-latency UI loading.
@@ -82,8 +82,8 @@ The repository implementation (`GenericRepositoryImpl` equivalent, specifically 
         3.  If Remote fails, throw error (UI handles feedback).
 *   **Synchronization (`syncRemote`)**:
     1.  Fetches all local and remote items.
-    2.  **Push**: Finds items present locally but missing remotely (e.g., created offline) and pushes them to Remote.
-    3.  **Pull**: Fetches the latest list from Remote and replaces the Local cache (Source of Truth).
+    2.  **Push**: Finds items present locally but missing remotely (by ID) and pushes them to Remote (handles offline creation). Note: Does not currently sync local updates or deletions to remote.
+    3.  **Pull**: Fetches the latest list from Remote and overwrites the Local cache (Remote is Source of Truth).
 
 ### Models
 Models in `data/models` are DTOs (Data Transfer Objects) that extend specific Entities. They include `fromJson` and `toJson` methods for serialization, bridging the gap between raw API data and Domain Entities.
@@ -128,13 +128,17 @@ Navigation is handled by **GoRouter**, configured in `AppRouter`.
 ### Habit Tracking
 *   **Habit Persistence**: Habits are stored locally and synced to remote.
 *   **Tracking**: Users can mark habits as completed for the day.
-*   **Streaks**: Streak values are stored in `HabitEntity.streak` and recalculated using `HabitLogic.calculateStreak()` in the domain layer. The algorithm counts consecutive completion days starting from today/yesterday backwards.
+*   **Streaks**: Streak values are stored in `HabitEntity.streak` but are treated as derived state. They are recalculated dynamically using `HabitLogic.calculateStreak()` during synchronization and completion toggles. The algorithm counts consecutive completion days starting from today/yesterday backwards.
 
 ### Offline Synchronization
 The app is built to be **Offline-First** (for reads) and **Resilient** (for writes).
 *   **Scenario 1 (Offline Start)**: App loads data immediately from Hive. User sees last known state.
 *   **Scenario 2 (Offline Write)**: User creates a task. Repository first checks connectivity via `NetworkInfo.isConnected` -> If offline, throws `Exception("No Internet Connection")` immediately (before attempting remote write). Error is displayed to UI via `FeedbackUtils`. (Note: A robust "Queue" system would be the next step for full offline-write support).
 *   **Scenario 3 (Online Sync)**: On app start, `syncRemote` ensures local data matches the server, merging any differences.
+
+### Utilities & Debugging
+*   **Feedback**: `FeedbackUtils` provides centralized logic for showing SnackBars (Success, Error, Info).
+*   **Debug Tools**: `HabitController` includes `debugAdvanceOneDay()` to simulate time passing for testing streak logic.
 
 ---
 # End of Documentation
