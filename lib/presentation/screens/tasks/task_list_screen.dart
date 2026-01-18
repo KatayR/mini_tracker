@@ -14,7 +14,7 @@ class TaskListScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('My Tasks')),
       body: Consumer<TaskController>(
         builder: (context, controller, child) {
-          final tasks = controller.tasks;
+          final tasks = controller.items;
           return ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: tasks.length,

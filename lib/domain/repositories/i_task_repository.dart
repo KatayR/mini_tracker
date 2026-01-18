@@ -1,8 +1,4 @@
 import '../entities/task_entity.dart';
+import 'i_base_repository.dart';
 
-abstract class ITaskRepository {
-  Future<List<TaskEntity>> fetchAllItems();
-  Future<void> create(TaskEntity item);
-  Future<void> update(TaskEntity item);
-  Future<void> delete(String id);
-}
+abstract class ITaskRepository extends IBaseRepository<TaskEntity> {}
