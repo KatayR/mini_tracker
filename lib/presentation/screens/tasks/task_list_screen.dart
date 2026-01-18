@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../domain/entities/task_entity.dart';
 import '../../controllers/task_controller.dart';
+import 'add_edit_task_screen.dart';
 
 class TaskListScreen extends StatelessWidget {
   const TaskListScreen({super.key});
@@ -43,8 +44,7 @@ class TaskListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          const snackBar = SnackBar(content: Text('Add Task functionality not implemented yet'));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const AddEditTaskScreen()));
         },
         child: const Icon(Icons.add),
       ),
