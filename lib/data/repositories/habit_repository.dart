@@ -16,7 +16,7 @@ class HabitRepository implements IHabitRepository {
   @override
   Future<void> create(HabitEntity item) async {
     final model = HabitModel.fromEntity(item);
-    await _localDataSource.add(model);
+    await _localDataSource.create(model);
   }
 
   @override
