@@ -4,32 +4,28 @@ import 'package:uuid/uuid.dart';
 import '../../core/constants/app_constants.dart';
 import '../../domain/entities/habit_entity.dart';
 import '../../domain/logic/habit_logic.dart';
+import '../../domain/repositories/i_habit_repository.dart';
 
 class HabitController extends ChangeNotifier {
-  final List<HabitEntity> _habits = [
-    HabitEntity(
-      id: '1',
-      name: 'Drink Water',
-      targetDays: 7,
-      streak: 3,
-      completionDates: [
-        DateTime.now(),
-        DateTime.now().subtract(const Duration(days: 1)),
-        DateTime.now().subtract(const Duration(days: 2)),
-      ],
-      createdAt: DateTime.now().subtract(const Duration(days: 10)),
-    ),
-  ];
+  final IHabitRepository _repository;
+  List<HabitEntity> _habits = [];
+
+  HabitController(this._repository);
 
   List<HabitEntity> get habits => List.unmodifiable(_habits);
 
-  void addHabit(String name, int targetDays) {
-    final newHabit = HabitEntity(id: const Uuid().v4(), name: name, targetDays: targetDays, createdAt: DateTime.now());
-    _habits.add(newHabit);
+  Future<void> loadHabits() async {
+    _habits = await _repository.fetchAllItems();
     notifyListeners();
   }
 
-  void toggleHabitCompletion(String id) {
+  Future<void> addHabit(String name, int targetDays) async {
+    final newHabit = HabitEntity(id: const Uuid().v4(), name: name, targetDays: targetDays, createdAt: DateTime.now());
+    await _repository.create(newHabit);
+    await loadHabits();
+  }
+
+  Future<void> toggleHabitCompletion(String id) async {
     final index = _habits.indexWhere((h) => h.id == id);
     if (index != -1) {
       final habit = _habits[index];
@@ -46,24 +42,26 @@ class HabitController extends ChangeNotifier {
       }
 
       final newStreak = HabitLogic.calculateStreak(newDates);
-      _habits[index] = habit.copyWith(completionDates: newDates, streak: newStreak);
-      notifyListeners();
+      final updatedHabit = habit.copyWith(completionDates: newDates, streak: newStreak);
+      await _repository.update(updatedHabit);
+      await loadHabits();
     }
   }
 
-  void deleteHabit(String id) {
-    _habits.removeWhere((h) => h.id == id);
-    notifyListeners();
+  Future<void> deleteHabit(String id) async {
+    await _repository.delete(id);
+    await loadHabits();
   }
 
   // Debug Tool
-  void debugAdvanceOneDay() {
+  Future<void> debugAdvanceOneDay() async {
     for (int i = 0; i < _habits.length; i++) {
       final habit = _habits[i];
       final newDates = habit.completionDates.map((d) => d.subtract(AppConstants.oneDay)).toList();
       final newStreak = HabitLogic.calculateStreak(newDates);
-      _habits[i] = habit.copyWith(completionDates: newDates, streak: newStreak);
+      final updatedHabit = habit.copyWith(completionDates: newDates, streak: newStreak);
+      await _repository.update(updatedHabit);
     }
-    notifyListeners();
+    await loadHabits();
   }
 }

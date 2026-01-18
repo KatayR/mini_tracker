@@ -4,8 +4,11 @@ import 'package:provider/provider.dart';
 
 import 'core/init/app_initializer.dart';
 import 'core/theme/app_theme.dart';
+import 'data/datasources/habit_local_data_source.dart';
 import 'data/datasources/task_local_data_source.dart';
+import 'data/models/habit_model.dart';
 import 'data/models/task_model.dart';
+import 'data/repositories/habit_repository.dart';
 import 'data/repositories/task_repository.dart';
 import 'presentation/controllers/habit_controller.dart';
 import 'presentation/controllers/task_controller.dart';
@@ -19,11 +22,16 @@ void main() async {
   final taskLocalDataSource = TaskLocalDataSource(taskBox);
   final taskRepository = TaskRepository(taskLocalDataSource);
 
+  final habitBox = Hive.box<HabitModel>('habits');
+  final habitLocalDataSource = HabitLocalDataSource(habitBox);
+  final habitRepository = HabitRepository(habitLocalDataSource);
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TaskController(taskRepository)..loadTasks()),
         ChangeNotifierProvider(create: (_) => HabitController()),
+        ChangeNotifierProvider(create: (_) => HabitController(habitRepository)..loadHabits()),
       ],
       child: const MainApp(),
     ),
