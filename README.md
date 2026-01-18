@@ -2,6 +2,10 @@
 
 Bu proje, görev (task) ve alışkanlık (habit) takibi yapılabilen, Clean Architecture prensiplerine uygun olarak geliştirilmiş bir Flutter uygulamasıdır.
 
+## İndir
+
+En güncel sürümü indirmek için: [APK İndir](https://github.com/KatayR/mini_tracker/releases/latest/download/app-release.apk)
+
 ## Projenin Nasıl Çalıştırılacağı
 
 Projeyi yerel ortamınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
