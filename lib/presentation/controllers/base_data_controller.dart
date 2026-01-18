@@ -60,7 +60,8 @@ abstract class BaseDataController<T extends BaseEntity> extends ChangeNotifier w
       notifyListeners();
     } catch (e) {
       AppLogger.e("Sync Failed", e);
-      FeedbackUtils.showError(AppStrings.error, AppStrings.syncFailed);
+      final message = e.toString().replaceAll("Exception: ", "");
+      FeedbackUtils.showError(AppStrings.error, message);
     } finally {
       _isSyncing = false;
       notifyListeners();

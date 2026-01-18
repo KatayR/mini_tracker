@@ -54,7 +54,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
           isSyncing: controller.isSyncing,
           filteredItems: controller.filteredTasks,
           onRefresh: () async {
-            await controller.loadItems();
+            await controller.syncItems();
           },
           emptyMessage: AppStrings.noTasksFound,
           emptyIcon: AppIcons.emptyTasks,

@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -12,20 +13,26 @@ import '../../data/repositories/task_repository_impl.dart';
 import '../../domain/repositories/i_habit_repository.dart';
 import '../../domain/repositories/i_task_repository.dart';
 import '../constants/app_constants.dart';
+import '../network/network_info.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> setupLocator() async {
-  // 1. External (Hive Boxes)
+  // 1. External (Hive Boxes & Connectivity)
   final taskBox = await Hive.openBox<TaskModel>(AppConstants.taskBox);
   final habitBox = await Hive.openBox<HabitModel>(AppConstants.habitBox);
+  final connectivity = Connectivity();
 
   getIt.registerLazySingleton(() => taskBox);
   getIt.registerLazySingleton(() => habitBox);
+  getIt.registerLazySingleton(() => connectivity);
 
-  // 2. Data Sources
+  // 2. Core
+  getIt.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(getIt()));
 
-  // Local Data Sources (Direct Implementation registration is fine since they implement the interface)
+  // 3. Data Sources
+
+  // Local Data Sources 
   getIt.registerLazySingleton<TaskLocalDataSource>(() => TaskLocalDataSourceImpl(getIt()));
   getIt.registerLazySingleton<HabitLocalDataSource>(() => HabitLocalDataSourceImpl(getIt()));
 
@@ -40,17 +47,19 @@ Future<void> setupLocator() async {
     instanceName: 'remoteHabit',
   );
 
-  // 3. Repositories
+  // 4. Repositories
   getIt.registerLazySingleton<ITaskRepository>(
     () => TaskRepositoryImpl(
       localDataSource: getIt<TaskLocalDataSource>(), // Implements ICrudDataSource
       remoteDataSource: getIt(instanceName: 'remoteTask'),
+      networkInfo: getIt(),
     ),
   );
   getIt.registerLazySingleton<IHabitRepository>(
     () => HabitRepositoryImpl(
       localDataSource: getIt<HabitLocalDataSource>(),
       remoteDataSource: getIt(instanceName: 'remoteHabit'),
+      networkInfo: getIt(),
     ),
   );
 }

@@ -1,3 +1,4 @@
+import '../../core/network/network_info.dart';
 import '../../core/utils/logger.dart';
 import '../../domain/entities/base_entity.dart';
 import '../../domain/repositories/i_base_repository.dart';
@@ -6,9 +7,15 @@ import '../datasources/interfaces/i_crud_data_source.dart';
 abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBaseRepository<E> {
   final ICrudDataSource<M> localDataSource;
   final ICrudDataSource<M> remoteDataSource;
+  final NetworkInfo networkInfo;
   final String logLabel;
 
-  BaseRepository({required this.localDataSource, required this.remoteDataSource, required this.logLabel});
+  BaseRepository({
+    required this.localDataSource,
+    required this.remoteDataSource,
+    required this.networkInfo,
+    required this.logLabel,
+  });
 
   M toModel(E entity);
 
@@ -24,6 +31,8 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
 
   @override
   Future<void> syncRemote() async {
+    await _ensureOnline();
+
     try {
       // 1. Get current states
       final localItems = await localDataSource.getAll();
@@ -53,6 +62,7 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
   Future<void> create(E item) async {
     final model = toModel(item);
     try {
+      await _ensureOnline();
       // 1. Remote update (Source of Truth)
       await remoteDataSource.create(model);
 
@@ -68,6 +78,7 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
   Future<void> update(E item) async {
     final model = toModel(item);
     try {
+      await _ensureOnline();
       // 1. Remote update
       await remoteDataSource.update(model);
 
@@ -82,6 +93,7 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
   @override
   Future<void> delete(String id) async {
     try {
+      await _ensureOnline();
       // 1. Remote update
       await remoteDataSource.delete(id);
 
@@ -90,6 +102,12 @@ abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBas
     } catch (e) {
       AppLogger.e("$logLabel Delete Remote Error", e);
       rethrow;
+    }
+  }
+
+  Future<void> _ensureOnline() async {
+    if (!await networkInfo.isConnected) {
+      throw Exception("No Internet Connection");
     }
   }
 }
