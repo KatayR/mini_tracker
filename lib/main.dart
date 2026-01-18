@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'core/init/app_initializer.dart';
 import 'core/theme/app_theme.dart';
 import 'data/datasources/habit_local_data_source.dart';
+import 'data/datasources/remote/mock_generic_remote_data_source.dart';
 import 'data/datasources/task_local_data_source.dart';
 import 'data/models/habit_model.dart';
 import 'data/models/task_model.dart';
@@ -20,12 +21,16 @@ void main() async {
   // Dependency Injection (Manual for MVP)
   final taskBox = Hive.box<TaskModel>('tasks');
   final taskLocalDataSource = TaskLocalDataSource(taskBox);
-  final taskRepository = TaskRepository(taskLocalDataSource);
+  final taskRemoteDataSource = MockGenericRemoteDataSource<TaskModel>();
+  final taskRepository = TaskRepository(localDataSource: taskLocalDataSource, remoteDataSource: taskRemoteDataSource);
 
   final habitBox = Hive.box<HabitModel>('habits');
   final habitLocalDataSource = HabitLocalDataSource(habitBox);
-  final habitRepository = HabitRepository(habitLocalDataSource);
-
+  final habitRemoteDataSource = MockGenericRemoteDataSource<HabitModel>();
+  final habitRepository = HabitRepository(
+    localDataSource: habitLocalDataSource,
+    remoteDataSource: habitRemoteDataSource,
+  );
   runApp(
     MultiProvider(
       providers: [

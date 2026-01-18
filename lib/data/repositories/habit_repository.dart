@@ -1,32 +1,17 @@
 import '../../domain/entities/habit_entity.dart';
 import '../../domain/repositories/i_habit_repository.dart';
-import '../datasources/habit_local_data_source.dart';
+import '../datasources/interfaces/i_crud_data_source.dart';
 import '../models/habit_model.dart';
+import 'base_repository.dart';
 
-class HabitRepository implements IHabitRepository {
-  final HabitLocalDataSource _localDataSource;
-
-  HabitRepository(this._localDataSource);
-
-  @override
-  Future<List<HabitEntity>> fetchAllItems() async {
-    return _localDataSource.getAll();
-  }
+class HabitRepository extends BaseRepository<HabitEntity, HabitModel> implements IHabitRepository {
+  HabitRepository({
+    required ICrudDataSource<HabitModel> localDataSource,
+    required ICrudDataSource<HabitModel> remoteDataSource,
+  }) : super(localDataSource: localDataSource, remoteDataSource: remoteDataSource, logLabel: 'HabitRepository');
 
   @override
-  Future<void> create(HabitEntity item) async {
-    final model = HabitModel.fromEntity(item);
-    await _localDataSource.create(model);
-  }
-
-  @override
-  Future<void> update(HabitEntity item) async {
-    final model = HabitModel.fromEntity(item);
-    await _localDataSource.update(model);
-  }
-
-  @override
-  Future<void> delete(String id) async {
-    await _localDataSource.delete(id);
+  HabitModel toModel(HabitEntity entity) {
+    return HabitModel.fromEntity(entity);
   }
 }
