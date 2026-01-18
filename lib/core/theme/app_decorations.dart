@@ -6,7 +6,7 @@ class AppDecorations {
   static InputDecoration input({required String label}) {
     return InputDecoration(
       labelText: label,
-      border: const OutlineInputBorder(),
+      border: const OutlineInputBorder(), // Consistent border
       contentPadding: const EdgeInsets.all(AppDimens.p16),
     );
   }
