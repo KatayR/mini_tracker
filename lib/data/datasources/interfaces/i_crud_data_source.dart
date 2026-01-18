@@ -1,7 +1,7 @@
 abstract class ICrudDataSource<T> {
   Future<List<T>> getAll();
-  Future<void> create(T item);
-  Future<void> update(T item);
+  Future<T> create(T item);
+  Future<T> update(T item);
   Future<void> delete(String id);
   Future<void> cacheAll(List<T> items);
 }
