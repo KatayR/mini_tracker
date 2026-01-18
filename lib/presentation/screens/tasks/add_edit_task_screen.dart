@@ -130,12 +130,14 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
                 decoration: AppDecorations.input(label: AppStrings.title),
                 validator: (v) => AppValidators.required(v, message: AppStrings.titleRequired),
                 textInputAction: TextInputAction.next,
+                maxLength: 50,
               ),
               const SizedBox(height: AppDimens.p16),
               TextFormField(
                 controller: _descController,
                 decoration: AppDecorations.input(label: AppStrings.description),
                 maxLines: 3,
+                maxLength: 500,
               ),
               const SizedBox(height: AppDimens.p16),
 
