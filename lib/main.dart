@@ -6,7 +6,7 @@ import 'core/init/injection_container.dart' as di;
 import 'core/theme/app_theme.dart';
 import 'presentation/controllers/habit_controller.dart';
 import 'presentation/controllers/task_controller.dart';
-import 'presentation/screens/main_screen.dart';
+import 'presentation/routes/app_router.dart';
 
 void main() async {
   // Initialize Hive
@@ -30,11 +30,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Mini Tracker',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: const MainScreen(),
+      routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
     );
   }
