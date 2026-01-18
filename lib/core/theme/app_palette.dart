@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Centralized color palette for the application.
+///
+/// Contains brand colors and semantic colors used throughout the app.
+/// Use these constants instead of hardcoding color values.
 class AppPalette {
   // Brand
   static const Color brandPurple = Color(0xFF6750A4);

@@ -1,18 +1,17 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
-import 'package:mini_tracker/data/datasources/interfaces/i_crud_data_source.dart';
-import 'package:mini_tracker/data/datasources/remote/mock_generic_remote_data_source.dart';
-import 'package:mini_tracker/data/datasources/task_local_data_source.dart';
-import 'package:mini_tracker/data/models/habit_model.dart';
-import 'package:mini_tracker/data/models/task_model.dart';
-import 'package:mini_tracker/data/repositories/habit_repository_impl.dart';
-import 'package:mini_tracker/data/repositories/task_repository.dart';
-import 'package:mini_tracker/domain/repositories/i_habit_repository.dart';
-import 'package:mini_tracker/domain/repositories/i_task_repository.dart';
-import 'package:mini_tracker/presentation/controllers/habit_controller.dart';
-import 'package:mini_tracker/presentation/controllers/task_controller.dart';
-
-import '../../data/datasources/local/habit_local_data_source.dart';
+import '../../data/datasources/habit_local_data_source.dart';
+import '../../data/datasources/interfaces/i_crud_data_source.dart';
+import '../../data/datasources/remote/mock_generic_remote_data_source.dart';
+import '../../data/datasources/task_local_data_source.dart';
+import '../../data/models/habit_model.dart';
+import '../../data/models/task_model.dart';
+import '../../data/repositories/habit_repository.dart';
+import '../../data/repositories/task_repository.dart';
+import '../../domain/repositories/i_habit_repository.dart';
+import '../../domain/repositories/i_task_repository.dart';
+import '../../presentation/controllers/habit_controller.dart';
+import '../../presentation/controllers/task_controller.dart';
 
 final sl = GetIt.instance;
 

@@ -11,9 +11,9 @@ import 'presentation/routes/app_router.dart';
 void main() async {
   // Initialize Hive
   await AppInitializer.init();
-
   // Initialize Dependency Injection
   await di.init();
+
   runApp(
     MultiProvider(
       providers: [
@@ -31,7 +31,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Mini Tracker',
+      title: 'Sehir360',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       routerConfig: AppRouter.router,
