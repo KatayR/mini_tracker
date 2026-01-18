@@ -100,6 +100,7 @@ class _AddEditHabitScreenState extends State<AddEditHabitScreen> {
                 controller: _nameController,
                 decoration: AppDecorations.input(label: AppStrings.habitName),
                 validator: (v) => AppValidators.required(v, message: AppStrings.nameRequired),
+                maxLength: 50,
               ),
               const SizedBox(height: AppDimens.p24),
 
