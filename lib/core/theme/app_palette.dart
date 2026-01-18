@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+class AppPalette {
+  // Brand
+  static const Color brandPurple = Color(0xFF6750A4);
+
   // Semantic
   static const Color errorRed = Colors.red;
   static const Color successGreen = Colors.green;

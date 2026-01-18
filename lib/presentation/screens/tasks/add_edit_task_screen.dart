@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/app_icons.dart';
@@ -28,7 +27,6 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
   late TextEditingController _descController;
   DateTime? _dueDate;
   TaskPriority _priority = TaskPriority.medium;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -60,93 +58,53 @@ class _AddEditTaskScreenState extends State<AddEditTaskScreen> {
     }
   }
 
-  Future<void> _saveTask() async {
+  void _saveTask() {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-
-      bool success;
       if (widget.task == null) {
         // Add
-        success = await context.read<TaskController>().addTask(
-          _titleController.text.trim(),
-          _descController.text.trim(),
-          _dueDate,
-          _priority,
-        );
+        context.read<TaskController>().addTask(_titleController.text.trim(), _descController.text.trim(), _priority);
       } else {
-        final updatedTask = widget.task!.copyWith(
-          title: _titleController.text.trim(),
-          description: _descController.text.trim(),
-          dueDate: _dueDate,
-          priority: _priority,
-        );
-        success = await context.read<TaskController>().updateTaskDetails(updatedTask);
+        // Edit logic to be implemented
       }
-
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-        if (success) {
-          context.pop();
-        }
-      }
+      Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.task != null;
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(isEditing ? AppStrings.editTask : AppStrings.newTask),
-        actions: [
-          if (_isLoading)
-            Padding(
-              padding: const EdgeInsets.all(AppDimens.p16),
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2, color: theme.colorScheme.onSurface),
-              ),
-            )
-          else
-            IconButton(icon: const Icon(AppIcons.save), onPressed: _saveTask),
-        ],
+        actions: [IconButton(icon: const Icon(AppIcons.save), onPressed: _saveTask)],
       ),
-      body: IgnorePointer(
-        ignoring: _isLoading,
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            padding: const EdgeInsets.all(AppDimens.p16),
-            children: [
-              TextFormField(
-                controller: _titleController,
-                decoration: AppDecorations.input(label: AppStrings.title),
-                validator: (v) => AppValidators.required(v, message: AppStrings.titleRequired),
-                textInputAction: TextInputAction.next,
-              ),
-              const SizedBox(height: AppDimens.p16),
-              TextFormField(
-                controller: _descController,
-                decoration: AppDecorations.input(label: AppStrings.description),
-                maxLines: 3,
-              ),
-              const SizedBox(height: AppDimens.p16),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(AppDimens.p16),
+          children: [
+            TextFormField(
+              controller: _titleController,
+              decoration: AppDecorations.input(label: AppStrings.title),
+              validator: (v) => AppValidators.required(v, message: AppStrings.titleRequired),
+              textInputAction: TextInputAction.next,
+            ),
+            const SizedBox(height: AppDimens.p16),
+            TextFormField(
+              controller: _descController,
+              decoration: AppDecorations.input(label: AppStrings.description),
+              maxLines: 3,
+            ),
+            const SizedBox(height: AppDimens.p16),
 
-              // Due Date
-              _buildDueDateTile(),
-              const Divider(),
+            // Due Date
+            _buildDueDateTile(),
+            const Divider(),
 
-              // Priority
-              _buildPrioritySelector(),
-            ],
-          ),
+            // Priority
+            _buildPrioritySelector(),
+          ],
         ),
       ),
     );
