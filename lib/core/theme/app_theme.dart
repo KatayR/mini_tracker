@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../domain/entities/task_entity.dart';
 import 'app_dimens.dart';
 import 'app_palette.dart';
 
@@ -21,4 +22,9 @@ class AppTheme {
       filled: true,
     ),
   );
+  static const Map<TaskPriority, Color> priorityColors = {
+    TaskPriority.low: AppPalette.successGreen,
+    TaskPriority.medium: AppPalette.warningOrange,
+    TaskPriority.high: AppPalette.errorRed,
+  };
 }
