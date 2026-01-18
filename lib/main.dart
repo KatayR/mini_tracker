@@ -29,9 +29,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TaskController(taskRepository)..loadTasks()),
-        ChangeNotifierProvider(create: (_) => HabitController()),
-        ChangeNotifierProvider(create: (_) => HabitController(habitRepository)..loadHabits()),
+        ChangeNotifierProvider(create: (_) => TaskController(taskRepository)..loadItems()),
+        ChangeNotifierProvider(create: (_) => HabitController(habitRepository)..loadItems()),
       ],
       child: const MainApp(),
     ),

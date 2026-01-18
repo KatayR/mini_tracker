@@ -1,20 +1,17 @@
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/task_entity.dart';
 import '../../domain/repositories/i_task_repository.dart';
+import 'base_data_controller.dart';
 
-class TaskController extends ChangeNotifier {
+class TaskController extends BaseDataController<TaskEntity> {
   final ITaskRepository _repository;
-  List<TaskEntity> _tasks = [];
 
   TaskController(this._repository);
 
-  List<TaskEntity> get tasks => List.unmodifiable(_tasks);
-
-  Future<void> loadTasks() async {
-    _tasks = await _repository.fetchAllItems();
-    notifyListeners();
+  @override
+  Future<List<TaskEntity>> loadLocalFromRepository() {
+    return _repository.fetchAllItems();
   }
 
   Future<void> addTask(String title, String description, TaskPriority priority) async {
@@ -26,21 +23,21 @@ class TaskController extends ChangeNotifier {
       createdAt: DateTime.now(),
     );
     await _repository.create(newTask);
-    await loadTasks();
+    addLocalItem(newTask);
   }
 
   Future<void> toggleTaskCompletion(String id) async {
-    final index = _tasks.indexWhere((t) => t.id == id);
+    final index = items.indexWhere((t) => t.id == id);
     if (index != -1) {
-      final task = _tasks[index];
+      final task = items[index];
       final updatedTask = task.copyWith(isCompleted: !task.isCompleted);
       await _repository.update(updatedTask);
-      await loadTasks();
+      updateLocalItem(updatedTask);
     }
   }
 
   Future<void> deleteTask(String id) async {
     await _repository.delete(id);
-    await loadTasks();
+    deleteLocalItem(id);
   }
 }

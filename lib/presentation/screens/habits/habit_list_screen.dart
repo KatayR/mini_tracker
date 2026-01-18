@@ -20,7 +20,7 @@ class HabitListScreen extends StatelessWidget {
       ),
       body: Consumer<HabitController>(
         builder: (context, controller, child) {
-          final habits = controller.habits;
+          final habits = controller.items;
           if (habits.isEmpty) {
             return const Center(child: Text('No habits yet'));
           }
