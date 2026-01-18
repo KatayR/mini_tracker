@@ -1,10 +1,13 @@
 import 'package:equatable/equatable.dart';
 
+import 'base_entity.dart';
+
 enum TaskPriority { low, medium, high }
 
 enum TaskStatus { active, completed }
 
-class TaskEntity extends Equatable {
+class TaskEntity extends Equatable implements BaseEntity {
+  @override
   final String id;
   final String title;
   final String description;
