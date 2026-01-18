@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../domain/entities/task_entity.dart';
 import '../../core/constants/app_icons.dart';
@@ -41,7 +42,14 @@ class TaskItemWidget extends StatelessWidget {
       isLoading: isLoading,
       child: ListTile(
         onTap: onTap,
-        leading: Checkbox(value: task.isCompleted, onChanged: onCheckboxChanged, shape: const CircleBorder()),
+        leading: Checkbox(
+          value: task.isCompleted,
+          onChanged: (val) {
+            HapticFeedback.lightImpact();
+            onCheckboxChanged(val);
+          },
+          shape: const CircleBorder(),
+        ),
         title: Text(
           task.title,
           style: AppTextStyles.headingSmall.copyWith(

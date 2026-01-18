@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../domain/entities/habit_entity.dart';
 import '../../core/constants/app_icons.dart';
@@ -34,7 +35,10 @@ class HabitItemWidget extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         leading: InkWell(
-          onTap: onToggle,
+          onTap: () {
+            HapticFeedback.lightImpact();
+            onToggle();
+          },
           customBorder: const CircleBorder(),
           child: Container(
             width: 40,
