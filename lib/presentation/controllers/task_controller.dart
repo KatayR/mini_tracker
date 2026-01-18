@@ -2,22 +2,22 @@ import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/task_entity.dart';
+import '../../domain/repositories/i_task_repository.dart';
 
 class TaskController extends ChangeNotifier {
-  final List<TaskEntity> _tasks = [
-    TaskEntity(
-      id: '1',
-      title: 'Buy groceries',
-      description: 'Milk, Eggs, Bread',
-      createdAt: DateTime.now(),
-      priority: TaskPriority.high,
-    ),
-    TaskEntity(id: '2', title: 'Walk the dog', createdAt: DateTime.now(), priority: TaskPriority.medium),
-  ];
+  final ITaskRepository _repository;
+  List<TaskEntity> _tasks = [];
+
+  TaskController(this._repository);
 
   List<TaskEntity> get tasks => List.unmodifiable(_tasks);
 
-  void addTask(String title, String description, TaskPriority priority) {
+  Future<void> loadTasks() async {
+    _tasks = await _repository.fetchAllItems();
+    notifyListeners();
+  }
+
+  Future<void> addTask(String title, String description, TaskPriority priority) async {
     final newTask = TaskEntity(
       id: const Uuid().v4(),
       title: title,
@@ -25,21 +25,22 @@ class TaskController extends ChangeNotifier {
       priority: priority,
       createdAt: DateTime.now(),
     );
-    _tasks.add(newTask);
-    notifyListeners();
+    await _repository.create(newTask);
+    await loadTasks();
   }
 
-  void toggleTaskCompletion(String id) {
+  Future<void> toggleTaskCompletion(String id) async {
     final index = _tasks.indexWhere((t) => t.id == id);
     if (index != -1) {
       final task = _tasks[index];
-      _tasks[index] = task.copyWith(isCompleted: !task.isCompleted);
-      notifyListeners();
+      final updatedTask = task.copyWith(isCompleted: !task.isCompleted);
+      await _repository.update(updatedTask);
+      await loadTasks();
     }
   }
 
-  void deleteTask(String id) {
-    _tasks.removeWhere((t) => t.id == id);
-    notifyListeners();
+  Future<void> deleteTask(String id) async {
+    await _repository.delete(id);
+    await loadTasks();
   }
 }
