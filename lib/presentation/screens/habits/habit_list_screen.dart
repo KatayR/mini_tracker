@@ -1,63 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/app_icons.dart';
+import '../../../core/constants/app_strings.dart';
 import '../../controllers/habit_controller.dart';
+import '../../routes/app_routes.dart';
+import '../../widgets/common/generic_list_screen.dart';
+import '../../widgets/common/habit_item_widget.dart';
 
-class HabitListScreen extends StatelessWidget {
+class HabitListScreen extends StatefulWidget {
   const HabitListScreen({super.key});
 
   @override
+  State<HabitListScreen> createState() => _HabitListScreenState();
+}
+
+class _HabitListScreenState extends State<HabitListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Trigger loading after frame to ensure Provider is ready
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<HabitController>().loadItems();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Habits'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.access_time), // Time Travel Icon
-            onPressed: () => context.read<HabitController>().debugAdvanceOneDay(),
-          ),
-        ],
-      ),
-      body: Consumer<HabitController>(
-        builder: (context, controller, child) {
-          final habits = controller.items;
-          if (habits.isEmpty) {
-            return const Center(child: Text('No habits yet'));
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: habits.length,
-            itemBuilder: (context, index) {
-              final habit = habits[index];
-              return Dismissible(
-                key: Key(habit.id),
-                onDismissed: (_) => controller.deleteHabit(habit.id),
-                child: Card(
-                  child: ListTile(
-                    leading: CircularProgressIndicator(value: habit.progress, backgroundColor: Colors.grey.shade200),
-                    title: Text(habit.name),
-                    subtitle: Text('${habit.streak} day streak'),
-                    trailing: IconButton(
-                      icon: Icon(
-                        habit.isCompletedToday ? Icons.check_circle : Icons.check_circle_outline,
-                        color: habit.isCompletedToday ? Colors.green : Colors.grey,
-                      ),
-                      onPressed: () => controller.toggleHabitCompletion(habit.id),
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Quick Add for MVP
-          context.read<HabitController>().addHabit('New Habit', 7);
-        },
-        child: const Icon(Icons.add),
-      ),
+    // Watch logic
+    final controller = context.watch<HabitController>();
+
+    return GenericListScreen(
+      title: AppStrings.myHabits,
+      actions: [
+        IconButton(
+          icon: const Icon(AppIcons.timeTravel, color: Colors.orange),
+          tooltip: AppStrings.debugTimeTravel,
+          onPressed: () => controller.debugAdvanceOneDay(),
+        ),
+      ],
+      searchHint: AppStrings.searchHabits,
+      onSearchChanged: (val) => controller.setSearchQuery(val),
+      isLoading: controller.isLoading,
+      isSyncing: controller.isSyncing,
+      filteredItems: controller.filteredHabits,
+      onRefresh: () async {
+        await controller.loadItems();
+      },
+      emptyMessage: AppStrings.noHabitsFound,
+      emptyIcon: AppIcons.emptyHabits,
+      onFabPressed: () {
+        context.push(AppRoutes.addHabit);
+      },
+      itemBuilder: (context, habit) {
+        final isHabitLoading = controller.isHabitLoading(habit.id);
+        return HabitItemWidget(
+          habit: habit,
+          isLoading: isHabitLoading,
+          onTap: () {
+            context.push(AppRoutes.editHabit, extra: habit);
+          },
+          onToggle: () {
+            controller.toggleHabitCompletion(habit);
+          },
+          onDelete: () {
+            controller.deleteHabit(habit.id);
+          },
+        );
+      },
     );
   }
 }
