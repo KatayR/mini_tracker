@@ -17,7 +17,7 @@ class TaskRepository implements ITaskRepository {
   @override
   Future<void> create(TaskEntity item) async {
     final model = TaskModel.fromEntity(item);
-    await _localDataSource.add(model);
+    await _localDataSource.create(model);
   }
 
   @override
