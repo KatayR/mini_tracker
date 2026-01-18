@@ -49,3 +49,11 @@ Bu projede State Management çözümü olarak **Provider** kullanılmıştır.
 2.  **Sadelik ve Etkinlik:** Karmaşık boilerplate kodlarına ihtiyaç duymadan, `ChangeNotifier` yapısı ile durum yönetimini (State Management) ve UI güncellemelerini verimli bir şekilde gerçekleştirir.
 3.  **Dependency Injection (Bağımlılık Enjeksiyonu):** Provider, sadece state yönetimini değil, aynı zamanda servislerin ve controller'ların widget ağacı üzerinde etkin bir şekilde dağıtılmasını (Dependency Injection) da sağlar.
 4.  **Test Edilebilirlik:** Controller sınıflarının UI'dan bağımsız olarak test edilmesini kolaylaştırır.
+
+## Bilinen Eksikler ve Geliştirme Önerileri
+
+Aşağıdaki maddeler, uygulamanın geliştirilmeye açık noktalarını ve gelecekteki sürümler için planlanan iyileştirmeleri içermektedir:
+
+*   **Toplu İşlem (Bulk Actions) Desteği:** Kullanıcı deneyimini iyileştirmek adına, liste ekranlarında alışkanlık veya görevlerin çoklu seçilip topluca silinebilmesi özelliği eklenebilir.
+*   **Kaydedilmemiş Değişiklik Uyarısı (Dirty Form Check):** Form ekranlarında (görev/alışkanlık ekleme veya düzenleme) kullanıcı değişiklik yaptıktan sonra kaydetmeden geri çıkmak isterse, veri kaybını önlemek amacıyla bir onay penceresi ("Değişiklikleri kaydetmeden çıkmak istiyor musunuz?") gösterilmelidir.
+*   **Gelişmiş Hata Mesajı Yönetimi:** Kullanıcı arayüzünde hata mesajları (Snackbar) gösterilirken, yeni bir hata oluştuğunda önceki mesajın kapatılarak sadece en güncel hatanın görüntülenmesi; böylece mesajların üst üste binmesinin engellenmesi sağlanmalıdır.
