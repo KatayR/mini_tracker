@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sehir360_clean/presentation/screens/tasks/task_list_screen.dart';
 
 import 'core/theme/app_theme.dart';
 
@@ -15,7 +16,7 @@ class MainApp extends StatelessWidget {
       title: 'Mini Tracker',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      home: const Scaffold(body: Center(child: Text('Mini Tracker'))),
+      home: const TaskListScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
