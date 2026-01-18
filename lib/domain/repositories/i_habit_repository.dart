@@ -1,8 +1,4 @@
 import '../entities/habit_entity.dart';
+import 'i_base_repository.dart';
 
-abstract class IHabitRepository {
-  Future<List<HabitEntity>> fetchAllItems();
-  Future<void> create(HabitEntity item);
-  Future<void> update(HabitEntity item);
-  Future<void> delete(String id);
-}
+abstract class IHabitRepository extends IBaseRepository<HabitEntity> {}

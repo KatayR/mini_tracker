@@ -1,34 +1,31 @@
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../domain/entities/habit_entity.dart';
 import '../../domain/logic/habit_logic.dart';
 import '../../domain/repositories/i_habit_repository.dart';
+import 'base_data_controller.dart';
 
-class HabitController extends ChangeNotifier {
+class HabitController extends BaseDataController<HabitEntity> {
   final IHabitRepository _repository;
-  List<HabitEntity> _habits = [];
 
   HabitController(this._repository);
 
-  List<HabitEntity> get habits => List.unmodifiable(_habits);
-
-  Future<void> loadHabits() async {
-    _habits = await _repository.fetchAllItems();
-    notifyListeners();
+  @override
+  Future<List<HabitEntity>> loadLocalFromRepository() {
+    return _repository.fetchAllItems();
   }
 
   Future<void> addHabit(String name, int targetDays) async {
     final newHabit = HabitEntity(id: const Uuid().v4(), name: name, targetDays: targetDays, createdAt: DateTime.now());
     await _repository.create(newHabit);
-    await loadHabits();
+    addLocalItem(newHabit);
   }
 
   Future<void> toggleHabitCompletion(String id) async {
-    final index = _habits.indexWhere((h) => h.id == id);
+    final index = items.indexWhere((h) => h.id == id);
     if (index != -1) {
-      final habit = _habits[index];
+      final habit = items[index];
       final now = DateTime.now();
 
       List<DateTime> newDates = List.from(habit.completionDates);
@@ -44,24 +41,24 @@ class HabitController extends ChangeNotifier {
       final newStreak = HabitLogic.calculateStreak(newDates);
       final updatedHabit = habit.copyWith(completionDates: newDates, streak: newStreak);
       await _repository.update(updatedHabit);
-      await loadHabits();
+      updateLocalItem(updatedHabit);
     }
   }
 
   Future<void> deleteHabit(String id) async {
     await _repository.delete(id);
-    await loadHabits();
+    deleteLocalItem(id);
   }
 
   // Debug Tool
   Future<void> debugAdvanceOneDay() async {
-    for (int i = 0; i < _habits.length; i++) {
-      final habit = _habits[i];
+    for (int i = 0; i < items.length; i++) {
+      final habit = items[i];
       final newDates = habit.completionDates.map((d) => d.subtract(AppConstants.oneDay)).toList();
       final newStreak = HabitLogic.calculateStreak(newDates);
       final updatedHabit = habit.copyWith(completionDates: newDates, streak: newStreak);
       await _repository.update(updatedHabit);
+      updateLocalItem(updatedHabit);
     }
-    await loadHabits();
   }
 }
