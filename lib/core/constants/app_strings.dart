@@ -5,7 +5,6 @@ class AppStrings {
   static const String cancel = 'Cancel';
   static const String delete = 'Delete';
   static const String syncing = 'Syncing...';
-  static const String syncFailed = 'Sync failed. Please try again.';
 
   // Habits
   static const String myHabits = 'My Habits';
