@@ -1,8 +1,8 @@
-# Technical Documentation: Sehir360 Prototype
+# Technical Documentation: Mini Tracker
 
 ## 1. Project Overview
-**Application Name:** Sehir360 Prototype (`sehir360_prttyp`)
-**Technologies:** Flutter (SDK ^3.10.0), Dart
+**Application Name:** Mini Tracker
+**Technologies:** Flutter (SDK ^3.10.4), Dart
 **State Management:** Provider
 **Architecture:** Clean Architecture
 **Local Storage:** Hive
@@ -15,7 +15,7 @@ The application is a prototype designed to demonstrate features like Habit Track
 The project adopts a layered **Clean Architecture** approach, divided into three main layers:
 
 1.  **Presentation Layer (`lib/presentation`)**: Contains the UI logic, widgets, screens, and controllers (State Management). It depends on the Domain layer.
-2.  **Domain Layer (`lib/domain`)**: The core of the application. It contains Entities (business objects), Repository Interfaces, and Business Logic (Use Cases/Services). This layer is independent of other layers.
+2.  **Domain Layer (`lib/domain`)**: The core of the application. It contains Entities (business objects), Repository Interfaces, and pure Business Logic classes. This layer is independent of other layers.
 3.  **Data Layer (`lib/data`)**: Handles data retrieval and persistence. It implements the Domain repositories and manages Data Sources (Local/Remote). It depends on the Domain layer.
 
 ### Directory Structure
@@ -25,7 +25,8 @@ lib/
 │   ├── constants/  # App-wide constants (Strings, Assets)
 │   ├── di/         # Dependency Injection setup (ServiceLocator)
 │   ├── init/       # App initialization logic
-│   ├── theme/      # App theming (Light/Dark themes, Colors, Typography)
+│   ├── network/    # Network connectivity abstraction (NetworkInfo)
+│   ├── theme/      # App theming (Light/Dark themes, Colors, Typography, Decorations)
 │   └── utils/      # Shared utility classes
 ├── data/           # Data Layer
 │   ├── datasources/# Remote and Local data sources
@@ -49,7 +50,8 @@ The `core` module provides essential services to the entire application.
 
 -   **Dependency Injection (`core/di`)**: Uses `get_it` to register and provide singletons and factories for Repositories, Data Sources, and external services. `setupLocator()` in `service_locator.dart` is the main registration point.
 -   **Initialization (`core/init`)**: `AppInitializer` handles asynchronous setup required before the app starts (e.g., initializing Hive, loading configurations).
--   **Theme (`core/theme`)**: Defines `AppTheme` with `lightTheme` and `darkTheme` configuration. `AppPalette` and `AppTextStyles` isolate color and typography definitions.
+-   **Network (`core/network`)**: Contains `NetworkInfo` abstraction with `NetworkInfoImpl` that wraps `connectivity_plus` to check internet connectivity. Used by repositories to enforce online requirements for write operations.
+-   **Theme (`core/theme`)**: Defines `AppTheme` with `lightTheme` and `darkTheme` configuration. Additional files include `AppPalette` (colors), `AppTextStyles` (typography), `AppDecorations` (box decorations), `AppDimens` (spacing/sizing), and `AppShapes` (border radii).
 -   **Constants (`core/constants`)**: Centralized string resources and configuration constants.
 
 
@@ -59,10 +61,10 @@ The Data Layer is responsible for data retrieval, storage, and synchronization. 
 ### Datasources
 The application uses two types of datasources, defined by the `ICrudDataSource` interface:
 
-*   **Local Datasource (`GenericLocalDataSourceImpl`)**:
+*   **Local Datasources (`TaskLocalDataSourceImpl`, `HabitLocalDataSourceImpl`)**:
     *   **Technology**: [Hive](https://docs.hivedb.dev/) (NoSQL key-value database).
-    *   **Function**: Acts as the local cache for offline access and instant data loads.
-    *   **Generic**: Designed to handle any entity extending `BaseEntity` (which provides an `id`).
+    *   **Function**: Act as the local cache for offline access and instant data loads.
+    *   **Implementation**: Separate implementations per entity type, each implementing `ICrudDataSource<T>` interface. Both handle entities extending `BaseEntity` (which provides an `id`).
 *   **Remote Datasource (`MockGenericRemoteDataSource`)**:
     *   **Technology**: Mock implementation (Simulates backend).
     *   **Function**: Simulates network delays and random errors (10% failure rate) to test error handling and synchronization.
@@ -90,7 +92,7 @@ Models in `data/models` are DTOs (Data Transfer Objects) that extend specific En
 The Domain layer contains the core business rules and is completely independent of the Data and Presentation layers.
 
 *   **Entities (`domain/entities`)**: Pure Dart classes representing business objects (e.g., `TaskEntity`, `HabitEntity`). They implement `equatable` for value comparison.
-*   **Logic (`domain/logic`)**: Contains pure business logic that doesn't fit into entities but doesn't require state. for example, `TaskFilterLogic` handles filtering and searching tasks in memory.
+*   **Logic (`domain/logic`)**: Contains pure business logic classes with static utility methods. For example, `TaskFilterLogic` handles filtering and searching tasks in memory, and `HabitLogic` provides streak calculation algorithms.
 *   **Repository Interfaces (`domain/repositories`)**: Abstract classes (contracts) that the Data layer must implement (e.g., `IHabitRepository`). This allows the Domain layer to request data without knowing *how* it is fetched.
 
 ## 6. Presentation Layer (`lib/presentation`)
@@ -98,7 +100,7 @@ The Presentation layer is responsible for the UI and handling user interactions.
 
 ### State Management (Controllers)
 The app uses **Provider** with `ChangeNotifier` for state management.
-*   **Base Controller (`BaseDataController`)**: A generic base class that handles common state (loading, error, success) and CRUD operations, reducing boilerplate code in specific controllers.
+*   **Base Controller (`BaseDataController`)**: A generic base class that handles common state (loading, syncing, search) and CRUD operations, reducing boilerplate code in specific controllers. Uses `RemoteActionMixin` for consistent remote operation handling with loading states and error feedback.
 *   **Feature Controllers**: `TaskController` and `HabitController` extend the base controller to add feature-specific logic.
 *   **Theme Controller (`ThemeController`)**: Manages the application's theme mode (Light/Dark) and persists the user's preference.
 
@@ -120,12 +122,13 @@ Navigation is handled by **GoRouter**, configured in `AppRouter`.
 
 ### Habit Tracking
 *   **Habit Persistence**: Habits are stored locally and synced to remote.
-*   **Tracking**: Users can mark habits as completed for the day. (Logic for streaks is handled in the domain layer).
+*   **Tracking**: Users can mark habits as completed for the day.
+*   **Streaks**: Streak values are stored in `HabitEntity.streak` and recalculated using `HabitLogic.calculateStreak()` in the domain layer. The algorithm counts consecutive completion days starting from today/yesterday backwards.
 
 ### Offline Synchronization
 The app is built to be **Offline-First** (for reads) and **Resilient** (for writes).
 *   **Scenario 1 (Offline Start)**: App loads data immediately from Hive. User sees last known state.
-*   **Scenario 2 (Offline Write)**: User creates a task. Repository attempts Remote write -> Fails -> Throws Error. (Note: Current implementation throws error to UI. A robust "Queue" system would be the next step for full offline-write support).
+*   **Scenario 2 (Offline Write)**: User creates a task. Repository first checks connectivity via `NetworkInfo.isConnected` -> If offline, throws `Exception("No Internet Connection")` immediately (before attempting remote write). Error is displayed to UI via `FeedbackUtils`. (Note: A robust "Queue" system would be the next step for full offline-write support).
 *   **Scenario 3 (Online Sync)**: On app start, `syncRemote` ensures local data matches the server, merging any differences.
 
 ---
