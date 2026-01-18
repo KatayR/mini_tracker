@@ -1,4 +1,4 @@
-# Mini Tracker (Sehir360 Prototype)
+# Mini Tracker
 
 Bu proje, görev (task) ve alışkanlık (habit) takibi yapılabilen, Clean Architecture prensiplerine uygun olarak geliştirilmiş bir Flutter uygulamasıdır.
 
