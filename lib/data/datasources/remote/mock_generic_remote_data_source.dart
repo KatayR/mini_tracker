@@ -9,7 +9,10 @@ class MockGenericRemoteDataSource<T extends BaseEntity> implements ICrudDataSour
 
   Future<void> _simulateDelay() async {
     await Future.delayed(const Duration(milliseconds: 500));
-    // Simulated error injection could be here
+    if (_random.nextInt(10) < 1) {
+      // 10% chance of error
+      throw Exception("Simulated Remote Error");
+    }
   }
 
   @override
@@ -19,21 +22,24 @@ class MockGenericRemoteDataSource<T extends BaseEntity> implements ICrudDataSour
   }
 
   @override
-  Future<void> create(T item) async {
+  Future<T> create(T item) async {
     await _simulateDelay();
+
     _items.add(item);
+    return item;
   }
 
   @override
-  Future<void> update(T item) async {
+  Future<T> update(T item) async {
     await _simulateDelay();
     final index = _items.indexWhere((i) => i.id == item.id);
     if (index != -1) {
       _items[index] = item;
     } else {
-      // Upsert
+      // Upsert: If item doesn't exist on remote, create it
       _items.add(item);
     }
+    return item;
   }
 
   @override
