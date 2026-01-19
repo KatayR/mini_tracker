@@ -48,10 +48,10 @@ Bu yapı sayesinde uygulama, veri kaynağı değişikliklerinden veya UI güncel
 
 ```
 lib/
-├── core/           # Çekirdek yardımcı programlar, yapılandırma
-├── data/           # Veri katmanı (Datasources, Modeller, Repo impl)
-├── domain/         # İş katmanı (Entityler, Repo arayüzleri, Lojik)
-├── presentation/   # Sunum katmanı (Ekranlar, Widgetlar, Controllerlar)
+├── config/         # Konfigürasyon ve başlatma
+├── data/           # Veri katmanı (Datasources, Modeller, Repo impl, Network impl)
+├── domain/         # İş katmanı (Entityler, Repo ve Network arayüzleri, Lojik)
+├── presentation/   # Sunum katmanı (Ekranlar, Widgetlar, Controllerlar, Tema, Sabitler)
 └── main.dart       # Uygulama giriş noktası
 ```
 

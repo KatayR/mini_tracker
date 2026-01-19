@@ -21,22 +21,21 @@ The project adopts a layered **Clean Architecture** approach, divided into three
 ### Directory Structure
 ```
 lib/
-├── core/           # Core utilities, configuration, and shared logic
-│   ├── constants/  # App-wide constants (Strings, Assets)
+├── config/         # App configuration and initialization
 │   ├── di/         # Dependency Injection setup (ServiceLocator)
-│   ├── init/       # App initialization logic
-│   ├── network/    # Network connectivity abstraction (NetworkInfo)
-│   ├── theme/      # App theming (Light/Dark themes, Colors, Typography, Decorations)
-│   └── utils/      # Shared utility classes
+│   └── init/       # App initialization logic
 ├── data/           # Data Layer
+│   ├── core/       # Data-specific core logic (NetworkInfo Implementation)
 │   ├── datasources/# Remote and Local data sources
 │   ├── models/     # Data Transfer Objects (DTOs) with JSON serialization
 │   └── repositories/# Implementation of domain repositories
 ├── domain/         # Domain Layer
+│   ├── core/       # Domain-specific core contracts (NetwokInfo Interface, LogicConstants)
 │   ├── entities/   # Pure business objects
 │   ├── logic/      # Pure business logic
 │   └── repositories/# Abstract repository interfaces
 ├── presentation/   # Presentation Layer
+│   ├── core/       # UI-specific core utilities (Theme, Constants, Utils)
 │   ├── controllers/# State management (Providers)
 │   ├── mixins/     # Reusable UI logic
 │   ├── routes/     # Navigation configuration (GoRouter)
@@ -45,14 +44,24 @@ lib/
 └── main.dart       # Application entry point
 ```
 
-## 3. Core Module
-The `core` module provides essential services to the entire application.
+## 3. Config & Core Modules
+The application's core logic has been distributed to align with Clean Architecture strictness.
 
--   **Dependency Injection (`core/di`)**: Uses `get_it` to register and provide singletons and factories for Repositories, Data Sources, and external services. `setupLocator()` in `service_locator.dart` is the main registration point.
--   **Initialization (`core/init`)**: `AppInitializer` handles asynchronous setup required before the app starts (e.g., initializing Hive, loading configurations).
--   **Network (`core/network`)**: Contains `NetworkInfo` abstraction with `NetworkInfoImpl` that wraps `connectivity_plus` to check internet connectivity. Used by repositories to enforce online requirements for write operations.
--   **Theme (`core/theme`)**: Defines `AppTheme` with `lightTheme` and `darkTheme` configuration. Additional files include `AppPalette` (colors), `AppTextStyles` (typography), `AppDecorations` (box decorations), `AppDimens` (spacing/sizing), and `AppShapes` (border radii).
--   **Constants (`core/constants`)**: Centralized string resources and configuration constants.
+*   **Configuration (`lib/config`)**: Handles infrastructure setup.
+    *   **Dependency Injection (`config/di`)**: Uses `get_it` to register services.
+    *   **Initialization (`config/init`)**: Handles async app startup logic.
+
+*   **Presentation Core (`lib/presentation/core`)**: Contains UI-specific helpers.
+    *   **Theme**: `AppTheme`, `AppPalette`, `AppTextStyles`.
+    *   **Constants**: Strings and UI constants.
+    *   **Utils**: UI helpers like `FeedbackUtils`.
+
+*   **Domain Core (`lib/domain/core`)**:
+    *   **Logic Constants**: Business-logic constants (e.g., `oneDay` duration).
+    *   **Network Interface**: `NetworkInfo` contract.
+
+*   **Data Core (`lib/data/core`)**:
+    *   **Network Implementation**: `NetworkInfoImpl` using `connectivity_plus`.
 
 
 ## 4. Data Layer (`lib/data`)
