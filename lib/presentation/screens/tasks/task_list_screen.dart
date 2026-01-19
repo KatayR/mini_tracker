@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_icons.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../core/theme/app_dimens.dart';
-import '../../../core/theme/app_text_styles.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/theme/app_dimens.dart';
+import 'package:mini_tracker/presentation/core/theme/app_text_styles.dart';
 import '../../../domain/entities/task_enums.dart';
 import '../../controllers/task_controller.dart';
 import '../../routes/app_routes.dart';

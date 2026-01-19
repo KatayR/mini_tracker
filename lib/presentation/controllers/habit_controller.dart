@@ -1,8 +1,8 @@
 import 'package:uuid/uuid.dart';
 
-import '../../core/constants/app_constants.dart';
-import '../../core/constants/app_strings.dart';
-import '../../core/utils/feedback_utils.dart';
+import 'package:mini_tracker/presentation/core/constants/app_constants.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/utils/feedback_utils.dart';
 import '../../domain/entities/habit_entity.dart';
 import '../../domain/logic/habit_logic.dart';
 import '../../domain/repositories/i_habit_repository.dart';

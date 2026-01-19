@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_icons.dart';
-import '../../../core/theme/app_dimens.dart';
-import '../../../core/theme/app_shapes.dart';
-import '../../../core/utils/dialog_utils.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/theme/app_dimens.dart';
+import 'package:mini_tracker/presentation/core/theme/app_shapes.dart';
+import 'package:mini_tracker/presentation/core/utils/dialog_utils.dart';
 
 class DismissibleItemCard extends StatelessWidget {
   final String id;

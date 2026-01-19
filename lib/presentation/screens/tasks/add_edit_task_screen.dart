@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_icons.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../core/theme/app_decorations.dart';
-import '../../../core/theme/app_dimens.dart';
-import '../../../core/theme/app_text_styles.dart';
-import '../../../core/utils/app_validators.dart';
-import '../../../core/utils/date_time_extension.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/theme/app_decorations.dart';
+import 'package:mini_tracker/presentation/core/theme/app_dimens.dart';
+import 'package:mini_tracker/presentation/core/theme/app_text_styles.dart';
+import 'package:mini_tracker/presentation/core/utils/app_validators.dart';
+import 'package:mini_tracker/presentation/core/utils/date_time_extension.dart';
 import '../../../domain/entities/task_entity.dart';
 import '../../controllers/task_controller.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_icons.dart';
-import '../../../core/theme/app_palette.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/theme/app_palette.dart';
 import '../../routes/app_routes.dart';
 
 class SplashScreen extends StatefulWidget {

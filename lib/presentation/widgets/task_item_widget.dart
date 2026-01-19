@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../domain/entities/task_entity.dart';
-import '../../core/constants/app_icons.dart';
-import '../../core/constants/app_strings.dart';
-import '../../core/theme/app_decorations.dart';
-import '../../core/theme/app_dimens.dart';
-import '../../core/theme/app_text_styles.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/utils/date_time_extension.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/theme/app_decorations.dart';
+import 'package:mini_tracker/presentation/core/theme/app_dimens.dart';
+import 'package:mini_tracker/presentation/core/theme/app_text_styles.dart';
+import 'package:mini_tracker/presentation/core/theme/app_theme.dart';
+import 'package:mini_tracker/presentation/core/utils/date_time_extension.dart';
 import 'common/dismissible_item_card.dart';
 
 class TaskItemWidget extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../presentation/routes/app_router.dart';
+import '../../routes/app_router.dart';
 import '../constants/app_constants.dart';
 import '../theme/app_palette.dart';
 

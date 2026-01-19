@@ -1,4 +1,4 @@
-import '../../core/constants/app_constants.dart';
+import '../core/logic_constants.dart';
 
 /// Provides pure business logic for habit-related calculations.
 ///
@@ -45,10 +45,10 @@ class HabitLogic {
     }
 
     // Check backwards from yesterday
-    var checkDate = todayNormalized.subtract(AppConstants.oneDay);
+    var checkDate = todayNormalized.subtract(LogicConstants.oneDay);
     while (normalizedDates.contains(checkDate)) {
       streak++;
-      checkDate = checkDate.subtract(AppConstants.oneDay);
+      checkDate = checkDate.subtract(LogicConstants.oneDay);
     }
 
     return streak;

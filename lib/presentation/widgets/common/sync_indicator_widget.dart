@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_strings.dart';
-import '../../../core/theme/app_dimens.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/theme/app_dimens.dart';
 
 class SyncIndicatorWidget extends StatelessWidget {
   const SyncIndicatorWidget({super.key});

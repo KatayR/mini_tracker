@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_icons.dart';
-import '../../../core/theme/app_dimens.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/theme/app_dimens.dart';
 import '../../controllers/theme_controller.dart';
 import 'app_search_bar.dart';
 import 'empty_state_widget.dart';

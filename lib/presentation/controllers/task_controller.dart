@@ -1,6 +1,6 @@
 import 'package:uuid/uuid.dart';
 
-import '../../core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
 import '../../domain/entities/task_entity.dart';
 import '../../domain/logic/task_filter_logic.dart';
 import '../../domain/repositories/i_task_repository.dart';

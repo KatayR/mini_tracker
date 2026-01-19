@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../core/utils/feedback_utils.dart';
-import '../../core/utils/logger.dart';
 import '../../domain/entities/base_entity.dart';
 import '../../presentation/mixins/remote_action_mixin.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/utils/feedback_utils.dart';
+import 'package:mini_tracker/presentation/core/utils/logger.dart';
 
 /// Generic base controller for managing a list of items of type [T].
 /// Handles loading, syncing, searching, and error states.

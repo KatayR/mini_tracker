@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import '../../core/constants/app_strings.dart';
-import '../../core/utils/feedback_utils.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/utils/feedback_utils.dart';
 
 /// Mixin to handle per-item loading states and safe remote execution.
 ///

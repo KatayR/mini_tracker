@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/theme/app_dimens.dart';
-import '../../../core/theme/app_text_styles.dart';
+import 'package:mini_tracker/presentation/core/theme/app_dimens.dart';
+import 'package:mini_tracker/presentation/core/theme/app_text_styles.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   final String message;

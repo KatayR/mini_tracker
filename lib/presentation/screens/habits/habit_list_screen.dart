@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/constants/app_icons.dart';
-import '../../../core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
 import '../../controllers/habit_controller.dart';
 import '../../routes/app_routes.dart';
 import '../../widgets/common/generic_list_screen.dart';

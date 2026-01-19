@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'core/constants/app_strings.dart';
-import 'core/di/service_locator.dart';
-import 'core/init/app_initializer.dart';
-import 'core/theme/app_theme.dart';
+import 'config/di/service_locator.dart';
+import 'config/init/app_initializer.dart';
 import 'domain/repositories/i_habit_repository.dart';
 import 'domain/repositories/i_task_repository.dart';
 import 'presentation/controllers/habit_controller.dart';
 import 'presentation/controllers/task_controller.dart';
 import 'presentation/controllers/theme_controller.dart';
+import 'presentation/core/constants/app_strings.dart';
+import 'presentation/core/theme/app_theme.dart';
 import 'presentation/routes/app_router.dart';
 
 void main() async {

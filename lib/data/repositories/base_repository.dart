@@ -1,7 +1,7 @@
-import '../../core/network/network_info.dart';
-import '../../core/utils/logger.dart';
+import '../../domain/core/network/network_info.dart';
 import '../../domain/entities/base_entity.dart';
 import '../../domain/repositories/i_base_repository.dart';
+import '../../presentation/core/utils/logger.dart';
 import '../datasources/interfaces/i_crud_data_source.dart';
 
 abstract class BaseRepository<E extends BaseEntity, M extends E> implements IBaseRepository<E> {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/task_entity.dart';
+import '../../../domain/entities/task_entity.dart';
 import 'app_dimens.dart';
 import 'app_palette.dart';
 

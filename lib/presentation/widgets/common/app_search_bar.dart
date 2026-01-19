@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
 
 class AppSearchBar extends StatelessWidget {
   final String hintText;

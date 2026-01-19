@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../../data/core/network/network_info_impl.dart';
 import '../../data/datasources/interfaces/i_crud_data_source.dart';
 import '../../data/datasources/local/habit_local_data_source.dart';
 import '../../data/datasources/local/task_local_data_source.dart';
@@ -10,10 +11,10 @@ import '../../data/models/habit_model.dart';
 import '../../data/models/task_model.dart';
 import '../../data/repositories/habit_repository_impl.dart';
 import '../../data/repositories/task_repository_impl.dart';
+import '../../domain/core/network/network_info.dart';
 import '../../domain/repositories/i_habit_repository.dart';
 import '../../domain/repositories/i_task_repository.dart';
-import '../constants/app_constants.dart';
-import '../network/network_info.dart';
+import '../../presentation/core/constants/app_constants.dart';
 
 final getIt = GetIt.instance;
 

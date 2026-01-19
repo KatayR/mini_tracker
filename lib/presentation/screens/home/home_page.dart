@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/constants/app_icons.dart';
-import '../../../core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
 
 class HomePage extends StatelessWidget {
   final StatefulNavigationShell navigationShell;

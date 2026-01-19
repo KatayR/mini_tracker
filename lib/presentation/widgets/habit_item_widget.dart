@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../domain/entities/habit_entity.dart';
-import '../../core/constants/app_icons.dart';
-import '../../core/constants/app_strings.dart';
-import '../../core/theme/app_dimens.dart';
-import '../../core/theme/app_text_styles.dart';
+import 'package:mini_tracker/presentation/core/constants/app_icons.dart';
+import 'package:mini_tracker/presentation/core/constants/app_strings.dart';
+import 'package:mini_tracker/presentation/core/theme/app_dimens.dart';
+import 'package:mini_tracker/presentation/core/theme/app_text_styles.dart';
 import 'common/dismissible_item_card.dart';
 
 class HabitItemWidget extends StatelessWidget {
